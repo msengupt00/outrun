@@ -20,15 +20,19 @@ class Route {
         let apicall = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.445297,-79.941479&radius=1609.34&key=AIzaSyD2sEnjE9LViaXMgvguCboMgDiaml1wdVY"
 
         
-        let locations = places(apicall)
+        //let locations = places(apicall)
         
-        //let randInt = Int.random(in: 0 ..< locations.count)
         
-        print("HE")
-        print(locations)
-//
-//        print("randInt: ", randInt)
-//        print("location: ", locations[randInt])
-        
-    }
-}
+        places(apicall, userCompletionHandler: { results, error in
+          
+          if let results = results {
+            for result in results {
+                print(result)
+            }
+            }
+            
+            })
+          }
+            
+        }
+    

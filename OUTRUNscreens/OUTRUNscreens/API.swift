@@ -10,11 +10,11 @@ import Foundation
 
 //url0 - api call to Places
 
-func places( _ apicall:String) -> Any{
-    let url0 = apicall
-    
-    var places: [Any] = []
 
+func places(_ apicall: String, userCompletionHandler: @escaping (Array<Any>?, Error?) -> Void) {
+    
+    var locations: [Any] = []
+    
     struct Welcome0: Decodable {
         //let htmlAttributions: [JSONAny]
         let nextPageToken: String
@@ -30,106 +30,132 @@ func places( _ apicall:String) -> Any{
     // MARK: - Result
     struct Result: Decodable {
         let geometry: Geometry
-        let icon: String
+//        let icon: String
         let id, name: String
-        let photos: [Photo]
-        let placeID, reference: String
-        let scope: Scope
-        let types: [String]
-        let vicinity: String
-        let openingHours: OpeningHours?
-        let plusCode: PlusCode?
-        let rating: Double?
-        let userRatingsTotal, priceLevel: Int?
+//        let photos: [Photo]
+//        let placeID, reference: String
+//        let scope: Scope
+//        let types: [String]
+//        let vicinity: String
+//        let openingHours: OpeningHours?
+//        let plusCode: PlusCode?
+//        let rating: Double?
+//        let userRatingsTotal, priceLevel: Int?
         
         enum CodingKeys: String, CodingKey {
-            case geometry, icon, id, name, photos
-            case placeID = "place_id"
-            case reference, scope, types, vicinity
-            case openingHours = "opening_hours"
-            case plusCode = "plus_code"
-            case rating
-            case userRatingsTotal = "user_ratings_total"
-            case priceLevel = "price_level"
+            case geometry, id, name
+//            case placeID = "place_id"
+//            case reference, scope, types, vicinity
+//            case openingHours = "opening_hours"
+//            case plusCode = "plus_code"
+//            case rating
+//            case userRatingsTotal = "user_ratings_total"
+//            case priceLevel = "price_level"
         }
     }
 
     // MARK: - Geometry
     struct Geometry: Decodable {
         let location: Location
-        let viewport: Viewport
+        //let viewport: Viewport
     }
 
-    // MARK: - Location
+     //MARK: - Location
     struct Location: Decodable {
         let lat, lng: Double
     }
 
     // MARK: - Viewport
-    struct Viewport: Decodable {
-        let northeast, southwest: Location
+//    struct Viewport: Decodable {
+//        let northeast, southwest: Location
+//    }
+//
+//    // MARK: - OpeningHours
+//    struct OpeningHours: Decodable {
+//        let openNow: Bool
+//
+//        enum CodingKeys: String, CodingKey {
+//            case openNow = "open_now"
+//        }
+//    }
+//
+//    // MARK: - Photo
+//    struct Photo: Decodable {
+//        let height: Int
+//        let photoReference: String
+//        let width: Int
+//
+//        enum CodingKeys: String, CodingKey {
+//            case height
+//            case photoReference = "photo_reference"
+//            case width
+//        }
+//    }
+//
+//    // MARK: - PlusCode
+//    struct PlusCode: Decodable {
+//        let compoundCode, globalCode: String
+//
+//        enum CodingKeys: String, CodingKey {
+//            case compoundCode = "compound_code"
+//            case globalCode = "global_code"
+//        }
+//    }
+//
+//    enum Scope: String, Codable {
+//        case google = "GOOGLE"
+//    }
+
+      let url = URL(string: apicall)!
+      let task0 = URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
+
+        guard let data = data else { return }
+        do {
+          // parse json data and return it
+            
+            guard let welcome0 = try? JSONDecoder().decode(Welcome0.self, from: data) else {
+                print("Error: Couldn't decode data into a result")
+                return
+            }
+            
+            for result in welcome0.results {
+                let latLong = String(result.geometry.location.lat) + ", " + String(result.geometry.location.lng) + ": " + result.name
+                locations.append(latLong)
+            }
+            print()
+            
+            userCompletionHandler(locations, nil)
+          
+        }
+      })
+      
+      task0.resume()
+      // function will end here and return
+      // then after receiving HTTP response, the completionHandler will be called
     }
 
-    // MARK: - OpeningHours
-    struct OpeningHours: Decodable {
-        let openNow: Bool
-        
-        enum CodingKeys: String, CodingKey {
-            case openNow = "open_now"
-        }
-    }
-
-    // MARK: - Photo
-    struct Photo: Decodable {
-        let height: Int
-        let photoReference: String
-        let width: Int
-        
-        enum CodingKeys: String, CodingKey {
-            case height
-            case photoReference = "photo_reference"
-            case width
-        }
-    }
-
-    // MARK: - PlusCode
-    struct PlusCode: Decodable {
-        let compoundCode, globalCode: String
-        
-        enum CodingKeys: String, CodingKey {
-            case compoundCode = "compound_code"
-            case globalCode = "global_code"
-        }
-    }
-
-    enum Scope: String, Codable {
-        case google = "GOOGLE"
-    }
-
-
-    let task0 = URLSession.shared.dataTask(with: URL(string: url0)!) { (data, response, error) in
-        guard let data = data else {
-            print("Error: No data to decode")
-            return
-        }
-        
-        guard let welcome0 = try? JSONDecoder().decode(Welcome0.self, from: data) else {
-            print("Error: Couldn't decode data into a result")
-            return
-        }
-        
-        // Output
-        for result in welcome0.results {
-            print("Latitude: \(result.geometry.location.lat) of \(result.name)")
-            print("Longitude: \(result.geometry.location.lng) of \(result.name)")
-        }
-        print()
-        
-    }
-    task0.resume()
-    
-    return {} 
-}
+//    let task0 = URLSession.shared.dataTask(with: URL(string: url0)!) { (data, response, error) in
+//        guard let data = data else {
+//            print("Error: No data to decode")
+//            return
+//        }
+//
+//        guard let welcome0 = try? JSONDecoder().decode(Welcome0.self, from: data) else {
+//            print("Error: Couldn't decode data into a result")
+//            return
+//        }
+//
+//        // Output
+//        for result in welcome0.results {
+//            print("Latitude: \(result.geometry.location.lat) of \(result.name)")
+//            print("Longitude: \(result.geometry.location.lng) of \(result.name)")
+//        }
+//        print()
+//
+//    }
+//    task0.resume()
+//    return {}
+//}
 
 
 func maps() -> String {
