@@ -37,17 +37,24 @@ class Route {
         }
     
     func createRoute (_ userLocationLat: Double, _ userLocationLong: Double) {
-        print(self.chosenHalfPoint)
+        //print(self.chosenHalfPoint)
         if self.chosenHalfPoint.count > 0 {
-            let first = "https://maps.googleapis.com/maps/api/directions/json?origin="  + String(userLocationLat) + ","
-            let second = "&destination=" + String(self.chosenHalfPoint[0]) + String(self.chosenHalfPoint[1])
+            let first = "https://maps.googleapis.com/maps/api/directions/json?origin="  + String(userLocationLat) + "," + String(userLocationLong)
+            let second = "&destination=" + String(self.chosenHalfPoint[0]) + "," + String(self.chosenHalfPoint[1])
             let third  = "&avoid=highways&mode=walking&key=AIzaSyD2sEnjE9LViaXMgvguCboMgDiaml1wdVY"
             
             let apicall = (first + second + third)
             
+            //print(apicall)
+            
             maps(apicall, userCompletionHandler: {results, error in
                 if let results = results {
-                    print (results)
+                    
+                    print("The duration of your walk is ", results[0])
+                    
+                    print("The total distance of your walk is", results[1])
+                        
+                    print(results[2])
                     }
                 })
         }

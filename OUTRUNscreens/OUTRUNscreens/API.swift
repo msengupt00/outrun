@@ -71,7 +71,7 @@ func places(_ apicall: String, userCompletionHandler: @escaping (Array<[String]>
     }
 
 
-func maps(_ url: String, userCompletionHandler: @escaping (Array<[Any]>?, Error?) -> Void) {
+func maps(_ url: String, userCompletionHandler: @escaping (Array<Any>?, Error?) -> Void) {
 
     //url - api call to Maps
     let url = URL(string: url)!
@@ -183,9 +183,6 @@ func maps(_ url: String, userCompletionHandler: @escaping (Array<[Any]>?, Error?
     struct Polyline: Decodable {
         let points: String
     }
-    
-    var test2: [[Any]] = [[]]
-
 
     //verify that data is valid
     let task = URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
@@ -197,22 +194,22 @@ func maps(_ url: String, userCompletionHandler: @escaping (Array<[Any]>?, Error?
                 return
             }
             var test : [Any] = []
+            var instructions : [Any] = []
             for route in welcome.routes {
                 for leg in route.legs {
-                    print("Your adventure will last " + leg.duration.text + " and you will walk for " + leg.distance.text + "!")
+//                    print("Your adventure will last " + leg.duration.text + " and you will walk for " + leg.distance.text + "!")
                     test.append(leg.duration.text)
                     test.append(leg.distance.text)
-
+//
                     for step in leg.steps {
-                        print(step.htmlInstructions + "for " + step.distance.text)
+                        //print(step.htmlInstructions + "for " + step.distance.text)
+                        instructions.append(String(step.htmlInstructions + "for " + step.distance.text))
+
                     }
-                    test.append(leg.steps)
+                    test.append(instructions)
                 }
             }
-            
-            test2.append(test)
-            
-            userCompletionHandler(test2, nil)
+            userCompletionHandler(test, nil)
         }
     })
 
