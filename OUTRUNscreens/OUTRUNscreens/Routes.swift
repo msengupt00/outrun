@@ -13,11 +13,20 @@ class Route {
     var userRadius: Float = 0
     var apiKey = "AIzaSyD2sEnjE9LViaXMgvguCboMgDiaml1wdVY"
     
-    func createRoute(_ userLocationLat: Int, _ userLocationLong: Int, _ userRadius: Int) {
+    func createRoute(_ userLocationLat: Double, _ userLocationLong: Double, _ userRadius: Float) {
         
 //        let apicall: String = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + userLocationLat + "," + userLocationLong + "&radius=" + userRadius/2 + "&key= " + apiKey
         
-        let apicall = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.445297,-79.941479&radius=1609.34&key=AIzaSyD2sEnjE9LViaXMgvguCboMgDiaml1wdVY"
+        let firstHalf = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + String(userLocationLat) + ","
+        
+        let secondHalf = String(userLocationLong) + "&radius="
+        
+        let lastBit = String(userRadius/2) + "&key=" + apiKey
+        
+        let apicall = (firstHalf + secondHalf + lastBit)
+        
+        //print(apicall)
+//        let apicall = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.445297,-79.941479&radius=1609.34&key=AIzaSyD2sEnjE9LViaXMgvguCboMgDiaml1wdVY"
 
         
         //let locations = places(apicall)
