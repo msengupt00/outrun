@@ -71,7 +71,7 @@ func places(_ apicall: String, userCompletionHandler: @escaping (Array<[String]>
     }
 
 
-func maps(_ url: String, userCompletionHandler: @escaping (Array<Any>?, Error?) -> Void) {
+func maps(_ url: String, userCompletionHandler: @escaping (Array<String>?, Error?) -> Void) {
 
     //url - api call to Maps
     let url = URL(string: url)!
@@ -193,23 +193,20 @@ func maps(_ url: String, userCompletionHandler: @escaping (Array<Any>?, Error?) 
                 print("Error: Couldn't decode data into a result")
                 return
             }
-            var test : [Any] = []
-            var instructions : [Any] = []
+            var routeInfo : [String] = []
+            var instructions : String = ""
             for route in welcome.routes {
                 for leg in route.legs {
-//                    print("Your adventure will last " + leg.duration.text + " and you will walk for " + leg.distance.text + "!")
-                    test.append(leg.duration.text)
-                    test.append(leg.distance.text)
-//
+                    routeInfo.append(leg.duration.text)
+                    routeInfo.append(leg.distance.text)
                     for step in leg.steps {
-                        //print(step.htmlInstructions + "for " + step.distance.text)
-                        instructions.append(String(step.htmlInstructions + "for " + step.distance.text))
+                        instructions += String(step.htmlInstructions + "for " + step.distance.text) + "\n"
 
                     }
-                    test.append(instructions)
+                    routeInfo.append(instructions)
                 }
             }
-            userCompletionHandler(test, nil)
+            userCompletionHandler(routeInfo, nil)
         }
     })
 
