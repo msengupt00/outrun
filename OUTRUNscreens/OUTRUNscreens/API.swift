@@ -6,17 +6,14 @@ import Foundation
 //Step 3: feed starting location and random place (destination) into api call below
 //Step 4: call opposite route back home
 
-
-
 //url0 - api call to Places
 
 
-func places(_ apicall: String, userCompletionHandler: @escaping (Array<Any>?, Error?) -> Void) {
+func places(_ apicall: String, userCompletionHandler: @escaping (Array<[String]>?, Error?) -> Void) {
     
-    var locations: [Any] = []
+    var locations: [[String]] = [[]]
     
     struct Welcome0: Decodable {
-        //let htmlAttributions: [JSONAny]
         let nextPageToken: String
         let results: [Result]
         let status: String
@@ -30,34 +27,16 @@ func places(_ apicall: String, userCompletionHandler: @escaping (Array<Any>?, Er
     // MARK: - Result
     struct Result: Decodable {
         let geometry: Geometry
-//        let icon: String
         let id, name: String
-//        let photos: [Photo]
-//        let placeID, reference: String
-//        let scope: Scope
-//        let types: [String]
-//        let vicinity: String
-//        let openingHours: OpeningHours?
-//        let plusCode: PlusCode?
-//        let rating: Double?
-//        let userRatingsTotal, priceLevel: Int?
         
         enum CodingKeys: String, CodingKey {
             case geometry, id, name
-//            case placeID = "place_id"
-//            case reference, scope, types, vicinity
-//            case openingHours = "opening_hours"
-//            case plusCode = "plus_code"
-//            case rating
-//            case userRatingsTotal = "user_ratings_total"
-//            case priceLevel = "price_level"
         }
     }
 
     // MARK: - Geometry
     struct Geometry: Decodable {
         let location: Location
-        //let viewport: Viewport
     }
 
      //MARK: - Location
@@ -65,103 +44,37 @@ func places(_ apicall: String, userCompletionHandler: @escaping (Array<Any>?, Er
         let lat, lng: Double
     }
 
-    // MARK: - Viewport
-//    struct Viewport: Decodable {
-//        let northeast, southwest: Location
-//    }
-//
-//    // MARK: - OpeningHours
-//    struct OpeningHours: Decodable {
-//        let openNow: Bool
-//
-//        enum CodingKeys: String, CodingKey {
-//            case openNow = "open_now"
-//        }
-//    }
-//
-//    // MARK: - Photo
-//    struct Photo: Decodable {
-//        let height: Int
-//        let photoReference: String
-//        let width: Int
-//
-//        enum CodingKeys: String, CodingKey {
-//            case height
-//            case photoReference = "photo_reference"
-//            case width
-//        }
-//    }
-//
-//    // MARK: - PlusCode
-//    struct PlusCode: Decodable {
-//        let compoundCode, globalCode: String
-//
-//        enum CodingKeys: String, CodingKey {
-//            case compoundCode = "compound_code"
-//            case globalCode = "global_code"
-//        }
-//    }
-//
-//    enum Scope: String, Codable {
-//        case google = "GOOGLE"
-//    }
-
-      let url = URL(string: apicall)!
-      let task0 = URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
+    let url = URL(string: apicall)!
+    let task0 = URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
 
         guard let data = data else { return }
         do {
-          // parse json data and return it
-            
             guard let welcome0 = try? JSONDecoder().decode(Welcome0.self, from: data) else {
                 print("Error: Couldn't decode data into a result")
                 return
             }
             
             for result in welcome0.results {
-                let latLong = String(result.geometry.location.lat) + ", " + String(result.geometry.location.lng) + ": " + result.name
-                locations.append(latLong)
-            }
-            print()
-            
+//                let latLong = String(result.geometry.location.lat) + ", " + String(result.geometry.location.lng) + ": " + result.name
+                var singleLocation : [String] = []
+                singleLocation.append(String(result.geometry.location.lat))
+                singleLocation.append(String(result.geometry.location.lng))
+                singleLocation.append(result.name)
+                locations.append(singleLocation)
+                }
+        
             userCompletionHandler(locations, nil)
           
-        }
+            }
       })
-      
       task0.resume()
-      // function will end here and return
-      // then after receiving HTTP response, the completionHandler will be called
     }
 
-//    let task0 = URLSession.shared.dataTask(with: URL(string: url0)!) { (data, response, error) in
-//        guard let data = data else {
-//            print("Error: No data to decode")
-//            return
-//        }
-//
-//        guard let welcome0 = try? JSONDecoder().decode(Welcome0.self, from: data) else {
-//            print("Error: Couldn't decode data into a result")
-//            return
-//        }
-//
-//        // Output
-//        for result in welcome0.results {
-//            print("Latitude: \(result.geometry.location.lat) of \(result.name)")
-//            print("Longitude: \(result.geometry.location.lng) of \(result.name)")
-//        }
-//        print()
-//
-//    }
-//    task0.resume()
-//    return {}
-//}
 
-
-func maps() -> String {
+func maps(_ url: String, userCompletionHandler: @escaping (Array<[Any]>?, Error?) -> Void) {
 
     //url - api call to Maps
-    let url = "https://maps.googleapis.com/maps/api/directions/json?origin=40.445297,-79.941479&destination=40.448832,-79.945698&avoid=highways&mode=walking&key=AIzaSyD2sEnjE9LViaXMgvguCboMgDiaml1wdVY"
+    let url = URL(string: url)!
 
 
     // MARK: - Welcome
@@ -169,7 +82,7 @@ func maps() -> String {
         let geocodedWaypoints: [GeocodedWaypoint]
         let routes: [Route]
         let status: String
-        
+
         enum CodingKeys: String, CodingKey {
             case geocodedWaypoints = "geocoded_waypoints"
             case routes
@@ -181,7 +94,7 @@ func maps() -> String {
     struct GeocodedWaypoint: Decodable {
         let geocoderStatus, placeID: String
         let types: [String]
-        
+
         enum CodingKeys: String, CodingKey {
             case geocoderStatus = "geocoder_status"
             case placeID = "place_id"
@@ -198,7 +111,7 @@ func maps() -> String {
         let summary: String
         let warnings: [String]
     //    let waypointOrder: [JSONAny]
-        
+
         enum CodingKeys: String, CodingKey {
             case bounds, copyrights, legs
             case overviewPolyline = "overview_polyline"
@@ -226,7 +139,7 @@ func maps() -> String {
         let startLocation: Northeast
         let steps: [Step]
     //    let trafficSpeedEntry, viaWaypoint: [JSONAny]
-        
+
         enum CodingKeys: String, CodingKey {
             case distance, duration
             case endAddress = "end_address"
@@ -254,7 +167,7 @@ func maps() -> String {
         let startLocation: Northeast
         let travelMode: String
         let maneuver: String?
-        
+
         enum CodingKeys: String, CodingKey {
             case distance, duration
             case endLocation = "end_location"
@@ -270,36 +183,40 @@ func maps() -> String {
     struct Polyline: Decodable {
         let points: String
     }
-
+    
+    var test2: [[Any]] = [[]]
 
 
     //verify that data is valid
-    let task = URLSession.shared.dataTask(with: URL(string: url)!) { (data, response, error) in
-        guard let data = data else {
-            print("Error: No data to decode")
-            return
-        }
-        
-        guard let welcome = try? JSONDecoder().decode(Welcome.self, from: data) else {
-            print("Error: Couldn't decode data into a result")
-            return
-        }
-        
-        // Output
-        for route in welcome.routes {
-            for leg in route.legs {
-                print("Your adventure will last " + leg.duration.text + " and you will walk for " + leg.distance.text + "!")
-                for step in leg.steps {
-                    print(step.htmlInstructions + "for " + step.distance.text)
+    let task = URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
+        guard let data = data else {return}
+
+        do {
+            guard let welcome = try? JSONDecoder().decode(Welcome.self, from: data) else {
+                print("Error: Couldn't decode data into a result")
+                return
+            }
+            var test : [Any] = []
+            for route in welcome.routes {
+                for leg in route.legs {
+                    print("Your adventure will last " + leg.duration.text + " and you will walk for " + leg.distance.text + "!")
+                    test.append(leg.duration.text)
+                    test.append(leg.distance.text)
+
+                    for step in leg.steps {
+                        print(step.htmlInstructions + "for " + step.distance.text)
+                    }
+                    test.append(leg.steps)
                 }
             }
+            
+            test2.append(test)
+            
+            userCompletionHandler(test2, nil)
         }
-        print()
-    }
+    })
 
     task.resume()
-    
-    return("MAP!")
 
 }
 
