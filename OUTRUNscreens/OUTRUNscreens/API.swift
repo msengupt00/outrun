@@ -55,7 +55,6 @@ func places(_ apicall: String, userCompletionHandler: @escaping (Array<[String]>
             }
             
             for result in welcome0.results {
-//                let latLong = String(result.geometry.location.lat) + ", " + String(result.geometry.location.lng) + ": " + result.name
                 var singleLocation : [String] = []
                 singleLocation.append(String(result.geometry.location.lat))
                 singleLocation.append(String(result.geometry.location.lng))
