@@ -12,36 +12,51 @@ class Route {
     var userTime: Int = 0
     var userRadius: Float = 0
     var apiKey = "AIzaSyD2sEnjE9LViaXMgvguCboMgDiaml1wdVY"
-    
-    func createRoute(_ userLocationLat: Double, _ userLocationLong: Double, _ userRadius: Float) {
-        
-//        let apicall: String = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + userLocationLat + "," + userLocationLong + "&radius=" + userRadius/2 + "&key= " + apiKey
-        
-        let firstHalf = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + String(userLocationLat) + ","
-        
-        let secondHalf = String(userLocationLong) + "&radius="
-        
-        let lastBit = String(userRadius/2) + "&key=" + apiKey
-        
-        let apicall = (firstHalf + secondHalf + lastBit)
-        
-        //print(apicall)
-//        let apicall = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.445297,-79.941479&radius=1609.34&key=AIzaSyD2sEnjE9LViaXMgvguCboMgDiaml1wdVY"
+    var possibleHalfPoints: [String] = []
+    var chosenHalfPoint: [String] = []
 
+    func createHalfPoint(_ userLocationLat: Double, _ userLocationLong: Double, _ userRadius: Float){
         
-        //let locations = places(apicall)
+        let first = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + String(userLocationLat) + ","
         
+        let second = String(userLocationLong) + "&radius="
+        
+        let third = String(userRadius/2) + "&key=" + apiKey
+        
+        let apicall = (first + second + third)
         
         places(apicall, userCompletionHandler: { results, error in
-          
-          if let results = results {
-            for result in results {
-                print(result)
-            }
-            }
-            
+            if let results = results {
+                
+                //FOR NOW - random halfpoint
+                let randNumber = Int.random(in: 0 ..< results.count)
+                self.chosenHalfPoint = results[randNumber]
+                }
             })
-          }
-            
+
         }
+    
+    func createRoute (_ userLocationLat: Double, _ userLocationLong: Double) {
+        if self.chosenHalfPoint.count > 0 {
+            let first = "https://maps.googleapis.com/maps/api/directions/json?origin="  + String(userLocationLat) + "," + String(userLocationLong)
+            let second = "&destination=" + String(self.chosenHalfPoint[0]) + "," + String(self.chosenHalfPoint[1])
+            let third  = "&avoid=highways&mode=walking&key=AIzaSyD2sEnjE9LViaXMgvguCboMgDiaml1wdVY"
+            
+            let apicall = (first + second + third)
+            
+            maps(apicall, userCompletionHandler: {results, error in
+                if let results = results {
+                    
+                    print("The duration of your walk is ", results[0])
+                    
+                    print("The total distance of your walk is", results[1])
+                        
+                    print(results[2])
+                    }
+                })
+            }
+        
+        }  
+    
+    }
     

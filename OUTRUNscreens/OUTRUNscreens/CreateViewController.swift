@@ -98,7 +98,8 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
     }
     
     @IBAction func createWorkout(_ sender: UIButton) {
-        route.createRoute(userCurrentLat,userCurrentLong,route.userRadius)
+        route.createHalfPoint(userCurrentLat,userCurrentLong,route.userRadius)
+        route.createRoute(userCurrentLat, userCurrentLong)
 
     }
     
