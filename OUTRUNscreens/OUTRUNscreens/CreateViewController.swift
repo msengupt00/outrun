@@ -17,7 +17,9 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
     let locationManager = CLLocationManager()
     var userCurrentLat = 0.0
     var userCurrentLong = 0.0
+    var chosenDirections : [String] = []
     
+
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var fiveMins: UIButton!
     @IBOutlet weak var tenMins: UIButton!
@@ -33,7 +35,7 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
         route.userRadius = 0
         
         //change button to reflect click
-        fiveMins.backgroundColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5)
+        fiveMins.backgroundColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8)
         fiveMins.setTitleColor(UIColor.black, for: .normal)
  
         
@@ -42,15 +44,32 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
         fifteenMins.backgroundColor = UIColor.black
         
         // Set other button's title color.
-        tenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5), for: .normal)
-        fifteenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5), for: .normal)
+        tenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+        fifteenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+        
+        
+        //set distance buttons
+        mileOne.backgroundColor = UIColor.black
+        mileThree.backgroundColor = UIColor.black
+        mileFive.backgroundColor = UIColor.black
+        // Set distance button's title color.
+        mileOne.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        mileThree.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        mileFive.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        // Set distance button's border color.
+        mileOne.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
+        mileThree.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha:0.25).cgColor
+        mileFive.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
+        
+        distanceLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.25)
+        timeLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
     }
     @IBAction func tenMinutes(_ sender: Any) {
         route.userTime = 10
         route.userRadius = 0
         
         //change button to reflect click
-        tenMins.backgroundColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5)
+        tenMins.backgroundColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8)
         tenMins.setTitleColor(UIColor.black, for: .normal)
         
         // Set other button's background color.
@@ -58,8 +77,24 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
         fifteenMins.backgroundColor = UIColor.black
         
         // Set other button's title color.
-        fiveMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5), for: .normal)
-        fifteenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5), for: .normal)
+        fiveMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+        fifteenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+    
+        //set distance buttons
+        mileOne.backgroundColor = UIColor.black
+        mileThree.backgroundColor = UIColor.black
+        mileFive.backgroundColor = UIColor.black
+        // Set distance button's title color.
+        mileOne.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        mileThree.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        mileFive.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        // Set distance button's border color.
+        mileOne.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
+        mileThree.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha:0.25).cgColor
+        mileFive.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
+        
+        distanceLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.25)
+        timeLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
     }
     
     @IBAction func fifteenMinutes(_ sender: Any) {
@@ -67,7 +102,7 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
         route.userRadius = 0
         
         //change button to reflect click
-        fifteenMins.backgroundColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5)
+        fifteenMins.backgroundColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8)
         fifteenMins.setTitleColor(UIColor.black, for: .normal)
         
         // Set other button's background color.
@@ -75,8 +110,25 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
         fiveMins.backgroundColor = UIColor.black
         
         // Set other button's title color.
-        tenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5), for: .normal)
-        fiveMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5), for: .normal)
+        tenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+        fiveMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+        
+        
+        //set distance buttons
+        mileOne.backgroundColor = UIColor.black
+        mileThree.backgroundColor = UIColor.black
+        mileFive.backgroundColor = UIColor.black
+        // Set distance button's title color.
+        mileOne.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        mileThree.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        mileFive.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        // Set distance button's border color.
+        mileOne.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
+        mileThree.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha:0.25).cgColor
+        mileFive.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
+        
+        distanceLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.25)
+        timeLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
     }
  
 
@@ -84,22 +136,106 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
         route.userRadius = 1609.34
         route.userTime = 0
         
+        //change button to reflect click
+        mileOne.backgroundColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8)
+        mileOne.setTitleColor(UIColor.black, for: .normal)
+
+
+        // Set other button's background color.
+        mileThree.backgroundColor = UIColor.black
+        mileFive.backgroundColor = UIColor.black
+
+        // Set other button's title color.
+        mileThree.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+        mileFive.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+
+        
+        //set time buttons
+        fiveMins.backgroundColor = UIColor.black
+        tenMins.backgroundColor = UIColor.black
+        fifteenMins.backgroundColor = UIColor.black
+        // Set distance button's title color.
+        fiveMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        tenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        fifteenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        // Set distance button's border color.
+        fiveMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
+        tenMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha:0.25).cgColor
+        fifteenMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
+        
+        distanceLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+        timeLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.25)
+
     }
     
     @IBAction func threeMiles(_ sender: UIButton) {
         route.userRadius = 4828.03
         route.userTime = 0
-
+        
+        //change button to reflect click
+        mileThree.backgroundColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8)
+        mileThree.setTitleColor(UIColor.black, for: .normal)
+        
+        // Set other button's background color.
+        mileOne.backgroundColor = UIColor.black
+        mileFive.backgroundColor = UIColor.black
+        
+        // Set other button's title color.
+        mileOne.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+        mileFive.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+        
+        //set time buttons
+        fiveMins.backgroundColor = UIColor.black
+        tenMins.backgroundColor = UIColor.black
+        fifteenMins.backgroundColor = UIColor.black
+        // Set distance button's title color.
+        fiveMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        tenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        fifteenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        // Set distance button's border color.
+        fiveMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
+        tenMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha:0.25).cgColor
+        fifteenMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
+        
+        distanceLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+        timeLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.25)
     }
     
     @IBAction func fiveMiles(_ sender: UIButton) {
         route.userRadius = 8046.72
         route.userTime = 0
+        
+        //change button to reflect click
+        mileFive.backgroundColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8)
+        mileFive.setTitleColor(UIColor.black, for: .normal)
+        
+        // Set other button's background color.
+        mileThree.backgroundColor = UIColor.black
+        mileOne.backgroundColor = UIColor.black
+        
+        // Set other button's title color.
+        mileThree.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+        mileOne.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+        
+        //set time buttons
+        fiveMins.backgroundColor = UIColor.black
+        tenMins.backgroundColor = UIColor.black
+        fifteenMins.backgroundColor = UIColor.black
+        // Set distance button's title color.
+        fiveMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        tenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        fifteenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25), for: .normal)
+        // Set distance button's border color.
+        fiveMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
+        tenMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha:0.25).cgColor
+        fifteenMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
+        
+        distanceLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+        timeLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.25)
     }
     
     @IBAction func createWorkout(_ sender: UIButton) {
-        route.createHalfPoint(userCurrentLat,userCurrentLong,route.userRadius)
-        route.createRoute(userCurrentLat, userCurrentLong)
+      routeCreation()
 
     }
     
@@ -122,9 +258,9 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
         fifteenMins.backgroundColor = UIColor.black
         
         // Set time button's title color.
-        fiveMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5), for: .normal)
-        tenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5), for: .normal)
-        fifteenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5), for: .normal)
+        fiveMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+        tenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
+        fifteenMins.setTitleColor(UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8), for: .normal)
         
         // Set time button's corner radius.
         fiveMins.layer.cornerRadius = 30
@@ -137,9 +273,9 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
         fifteenMins.layer.borderWidth = 1
         
         // Set time button's border color.
-        fiveMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5).cgColor
-        tenMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5).cgColor
-        fifteenMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.5).cgColor
+        fiveMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8).cgColor
+        tenMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8).cgColor
+        fifteenMins.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.8).cgColor
         
         //timeLabel.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
         
@@ -170,7 +306,7 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
         mileThree.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha:0.25).cgColor
         mileFive.layer.borderColor = UIColor(red: 1.52, green: 0.56, blue: 1.16, alpha: 0.25).cgColor
         
-        //distanceLabel.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3)
+        distanceLabel.textColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.25)
         
         
     }
@@ -182,6 +318,19 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
         //print("locations = \(locValue.latitude) \(locValue.longitude)")
     }
     
+    func routeCreation() {
+        route.createRoute(userCurrentLat, userCurrentLong, route.userRadius)
+        chosenDirections = route.directions
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.destination is MapViewController
+        {
+            let vc = segue.destination as? MapViewController
+            vc?.directions = chosenDirections
+        }
+    }
     
 }
 
