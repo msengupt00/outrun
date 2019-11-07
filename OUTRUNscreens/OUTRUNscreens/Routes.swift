@@ -14,6 +14,7 @@ class Route {
     var apiKey = "AIzaSyD2sEnjE9LViaXMgvguCboMgDiaml1wdVY"
     var possibleHalfPoints: [String] = []
     var chosenHalfPoint: [String] = []
+    var directions: [String] = []
 
     func createHalfPoint(_ userLocationLat: Double, _ userLocationLong: Double, _ userRadius: Float){
         
@@ -33,10 +34,12 @@ class Route {
                 self.chosenHalfPoint = results[randNumber]
                 }
             })
+        
 
         }
     
-    func createRoute (_ userLocationLat: Double, _ userLocationLong: Double) {
+    func createRoute (_ userLocationLat: Double, _ userLocationLong: Double, _ userRadius: Float) {
+        createHalfPoint(userLocationLat, userLocationLong, userRadius)
         if self.chosenHalfPoint.count > 0 {
             let first = "https://maps.googleapis.com/maps/api/directions/json?origin="  + String(userLocationLat) + "," + String(userLocationLong)
             let second = "&destination=" + String(self.chosenHalfPoint[0]) + "," + String(self.chosenHalfPoint[1])
@@ -47,12 +50,16 @@ class Route {
             maps(apicall, userCompletionHandler: {results, error in
                 if let results = results {
                     
-                    print("The duration of your walk is ", results[0])
+                    print("The duration of your walk is", results[0])
                     
                     print("The total distance of your walk is", results[1])
                         
                     print(results[2])
-                    }
+                    
+                    print("hi")
+                    
+                    self.directions = results
+                }
                 })
             }
         
