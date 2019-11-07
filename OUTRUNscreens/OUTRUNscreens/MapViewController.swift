@@ -32,33 +32,32 @@ class MapViewController: UIViewController {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationManager.startUpdatingLocation()
-        print("FINISHED LOCATIONS")
         
 
         }
     
     func getDirections() {
-        if let instructions = directions["Instructions"] {
-            print("we got to the directions function")
+        print("lololololololol")
+        if let checkNil = directions["Instructions"] {
             self.locationManager.monitoredRegions.forEach({ self.locationManager.stopMonitoring(for: $0) })
                 
                 let instructions = directions["Instructions"]!
                 let coordinates =  directions["Coordinates"]!
+                let distances = directions["Distances"]!
             
                 for i in 0 ..< instructions.count {
-                    let instructionText = instructions[i]
                     let coordinate2D = CLLocationCoordinate2D(latitude: Double(coordinates[i * 2])!, longitude: Double(coordinates[i * 2 + 1])!)
-                    print(instructionText)
                     let region = CLCircularRegion(center: coordinate2D,
-                                                  radius: 20,
+                                                  radius: 0.1,
                                                   identifier: "\(i)")
                     self.locationManager.startMonitoring(for: region)
                 }
                 
-                let initialMessage = instructions[0]
-                let test = "     " + String(self.stepCounter) + " out of " + String(instructions.count)
-                self.mapMessage.text = initialMessage + test
-                self.stepCounter += 1
+                var initialMessage = instructions[0]
+                print("\nthis is the initial message", initialMessage)
+                initialMessage = initialMessage.replacingOccurrences(of: "<[^>]+>", with: "", options: String.CompareOptions.regularExpression, range: nil)
+                stepCounter = 1
+            self.mapMessage.text = initialMessage.lowercased()
             }
     }
         
@@ -67,27 +66,34 @@ class MapViewController: UIViewController {
 extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         self.getDirections()
-        print("we got to did update location manager")
         manager.stopUpdatingLocation()
         guard let currentLocation = locations.first else { return }
         currentCoordinate = currentLocation.coordinate
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("ENTERED")
-        stepCounter += 1
         if stepCounter < directions["Instructions"]!.count {
-            let currentStep = directions["Instructions"]![stepCounter]
-            //let message = "In \(currentStep.distance) meters, \(currentStep.instructions)"
-            mapMessage.text = currentStep
-    
-        } else {
-            let message = "Arrived at destination"
-            mapMessage.text = message
-           
+            var currentStep = directions["Instructions"]![stepCounter]
+            var distToPoint = "In " + directions["Distances"]![stepCounter - 1]
+            currentStep = currentStep.replacingOccurrences(of: "<[^>]+>", with: "", options: String.CompareOptions.regularExpression, range: nil)
+            currentStep = currentStep.lowercased()
+            
+            mapMessage.text = distToPoint + " " + currentStep
+            stepCounter += 1
+
+            print("Step Counter ", stepCounter)
+        }
+        else {
+            mapMessage.text = "Arrived at destination"
             stepCounter = 0
             locationManager.monitoredRegions.forEach({ self.locationManager.stopMonitoring(for: $0) })
             
         }
+    }
+    
+    func messageTextHelper() {
+        
+        
+        
     }
 }

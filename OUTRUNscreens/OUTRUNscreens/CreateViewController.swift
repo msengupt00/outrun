@@ -324,7 +324,6 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
         if segue.destination is MapViewController
         {
             let vc = segue.destination as? MapViewController
-            print(route.directions, "in create view")
             vc?.directions = route.directions
         }
     }

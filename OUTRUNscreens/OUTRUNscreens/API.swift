@@ -200,14 +200,17 @@ func maps(_ url: String, userCompletionHandler: @escaping (Dictionary<String, [S
                     routeInfo["Distance"] = [leg.distance.text]
                     var coordinates:[String] = []
                     var instructions:[String] = []
+                    var distances:[String] = []
                     for step in leg.steps {
-                        instructions.append(String(step.htmlInstructions + "for " + step.distance.text) + "\n")
+                        instructions.append(String(step.htmlInstructions))
+                        distances.append(String(step.distance.text))
                         coordinates.append(String(step.endLocation.lat))
                         coordinates.append(String(step.endLocation.lng))
                     }
                     routeInfo["Coordinates"] = coordinates
                     routeInfo["Instructions"] = instructions
-                }
+                    routeInfo["Distances"] = distances
+                 }
             }
             userCompletionHandler(routeInfo, nil)
         }
