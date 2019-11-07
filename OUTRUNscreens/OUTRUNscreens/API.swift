@@ -70,7 +70,7 @@ func places(_ apicall: String, userCompletionHandler: @escaping (Array<[String]>
     }
 
 
-func maps(_ url: String, userCompletionHandler: @escaping (Array<String>?, Error?) -> Void) {
+func maps(_ url: String, userCompletionHandler: @escaping (Dictionary<String, [String]>?, Error?) -> Void) {
 
     //url - api call to Maps
     let url = URL(string: url)!
@@ -183,6 +183,7 @@ func maps(_ url: String, userCompletionHandler: @escaping (Array<String>?, Error
         let points: String
     }
 
+
     //verify that data is valid
     let task = URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
         guard let data = data else {return}
@@ -192,17 +193,20 @@ func maps(_ url: String, userCompletionHandler: @escaping (Array<String>?, Error
                 print("Error: Couldn't decode data into a result")
                 return
             }
-            var routeInfo : [String] = []
-            var instructions : String = ""
+            var routeInfo : [String: [String]] = [:]
             for route in welcome.routes {
                 for leg in route.legs {
-                    routeInfo.append(leg.duration.text)
-                    routeInfo.append(leg.distance.text)
+                    routeInfo["Duration"] = [leg.duration.text]
+                    routeInfo["Distance"] = [leg.distance.text]
+                    var coordinates:[String] = []
+                    var instructions:[String] = []
                     for step in leg.steps {
-                        instructions += String(step.htmlInstructions + "for " + step.distance.text) + "\n"
-
+                        instructions.append(String(step.htmlInstructions + "for " + step.distance.text) + "\n")
+                        coordinates.append(String(step.endLocation.lat))
+                        coordinates.append(String(step.endLocation.lng))
                     }
-                    routeInfo.append(instructions)
+                    routeInfo["Coordinates"] = coordinates
+                    routeInfo["Instructions"] = instructions
                 }
             }
             userCompletionHandler(routeInfo, nil)

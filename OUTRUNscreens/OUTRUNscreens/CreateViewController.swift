@@ -17,8 +17,6 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
     let locationManager = CLLocationManager()
     var userCurrentLat = 0.0
     var userCurrentLong = 0.0
-    var chosenDirections : [String] = []
-    
 
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var fiveMins: UIButton!
@@ -236,7 +234,6 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
     
     @IBAction func createWorkout(_ sender: UIButton) {
       routeCreation()
-
     }
     
     
@@ -320,7 +317,6 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
     
     func routeCreation() {
         route.createRoute(userCurrentLat, userCurrentLong, route.userRadius)
-        chosenDirections = route.directions
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
@@ -328,7 +324,8 @@ class CreateViewController: UIViewController, CLLocationManagerDelegate{
         if segue.destination is MapViewController
         {
             let vc = segue.destination as? MapViewController
-            vc?.directions = chosenDirections
+            print(route.directions, "in create view")
+            vc?.directions = route.directions
         }
     }
     
